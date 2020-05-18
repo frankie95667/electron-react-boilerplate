@@ -9,7 +9,7 @@
  * `./app/main.prod.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -82,6 +82,11 @@ const createWindow = async () => {
       mainWindow.show();
       mainWindow.focus();
     }
+
+    ipcMain.on("request", (event, arg) => {
+      event.reply("response", arg);
+    })
+
   });
 
   mainWindow.on('closed', () => {
